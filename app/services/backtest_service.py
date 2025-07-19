@@ -1,8 +1,12 @@
 import backtrader as bt
 import yfinance as yf
+import numpy as np
 
 def calculate_cagr(initial_value, final_value, periods):
     return ((final_value / initial_value) ** (1 / periods)) - 1
+
+def calculate_sharpe_ratio(returns):
+    return np.mean(returns)/np.std(returns) * np.sqrt(252)  if np.std(returns) else 0
 
 def run_backtest_on_code(strategy_code: str, ticker: str):
     local_vars = {}
