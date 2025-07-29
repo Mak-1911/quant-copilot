@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from dotenv import load_dotenv
-from app.routes import generate, backtest, explain, plot, strategy
+from app.routes import generate, backtest, explain, plot, strategy, export
 from app.db import init_db
 
 app = FastAPI()
@@ -10,6 +10,7 @@ app.include_router(backtest.router)
 app.include_router(explain.router)
 app.include_router(plot.router)
 app.include_router(strategy.router)
+app.include_router(export.router)
 
 @app.get("/")
 def home():
