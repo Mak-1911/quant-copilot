@@ -1,12 +1,14 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from sqlmodel import select
 from app.db import get_session
 from app.models.strategy import Strategy
+from app.auth.utils import get_current_user
 
 router = APIRouter()
 
 @router.post("/strategy/save")
-def save_strategy(strategy: Strategy):
+def save_strategy(strategy: Strategy, user_email: str = Depends(get_current_user)):
+    strategy.user_id = user_email
     with get_session() as session:
         session.add(strategy)
         session.commit()
