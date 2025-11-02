@@ -7,4 +7,5 @@ class Strategy(SQLModel, table=True):
     name: str
     prompt:str
     code:str
+    user_id: Optional[str] = Field(default=None, index=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)

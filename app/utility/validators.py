@@ -41,3 +41,27 @@ def validate_strategy_code(code: str) -> dict:
         return {"valid": False, "reason": "No valid backtrader Strategy class found."}
 
     return {"valid": True}
+
+def validate_strategy_risk(code: str) -> dict:
+    """Validate Strategy for proper risk management implementation."""
+    try:
+        tree = ast.parsre(code)
+        has_stoploss = False
+        has_position_sizing = False
+
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Attribute):
+                if node.attr == "stop_loss":
+                    has_stoploss = True
+                if node.attr in ['size', 'stake']:
+                    has_position_sizing = True
+            
+        return {
+            "valid": has_stoploss and has_position_sizing,
+            "warnings": {
+                "missing_stoploss": not has_stoploss,
+                "missing_position_sizing": not has_position_sizing
+            }
+        }
+    except Exception: 
+        return {"valid": False, "reason": "Error analyzing code."}

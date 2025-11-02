@@ -16,7 +16,7 @@ def save_strategy(strategy: Strategy, user_email: str = Depends(get_current_user
     return {"message": "Strategy saved successfully", "strategy_id": strategy.id}
 
 @router.get("/strategy/list")
-def get_strategies(strategy_id:int):
+def get_strategies():
     with get_session() as session:
         results = session.exec(select(Strategy).order_by(Strategy.created_at.desc())).all()
         return results
